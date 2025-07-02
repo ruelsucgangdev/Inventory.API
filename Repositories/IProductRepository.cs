@@ -10,4 +10,7 @@ namespace Inventory.API.Repositories
         Task<Product?> UpdateAsync(Product product);
         Task<bool> DeleteAsync(int id);
     }
+
+     
+        
 }

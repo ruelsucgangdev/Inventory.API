@@ -18,9 +18,10 @@ namespace Inventory.API.Repositories
             return await _context.Products.ToListAsync();
         }
 
+
         public async Task<Product?> GetByIdAsync(int id)
         {
-            return await _context.Products.FindAsync(id);
+            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Product> AddAsync(Product product)
@@ -53,5 +54,6 @@ namespace Inventory.API.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+
     }
 }
