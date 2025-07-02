@@ -10,5 +10,7 @@ namespace Inventory.API.Data
             : base(options) { }
 
         public DbSet<Product> Products => Set<Product>();
+        public DbSet<User> Users => Set<User>(); 
+
     }
 }

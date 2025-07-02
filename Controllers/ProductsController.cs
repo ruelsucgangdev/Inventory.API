@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Inventory.API.Models;
 using Inventory.API.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inventory.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
@@ -15,6 +17,7 @@ namespace Inventory.API.Controllers
             _productRepository = productRepository;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
