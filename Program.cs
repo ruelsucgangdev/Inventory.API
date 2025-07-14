@@ -12,19 +12,30 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+bool IsRunningInDocker()
+{
+    return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+}
+
+if (IsRunningInDocker())
+{
+    builder.WebHost.ConfigureKestrel(serverOptions =>
+    {
+        serverOptions.ListenAnyIP(80); // For Docker to expose port
+    });
+}
+// docker build -t inventory-api .
+// docker run -d -p 5000:80 --name inventory-api-container inventory-api
+// docker run -d -p 5000:80 --name inventory-api-container inventory-api
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(80); // important for Docker Desktop
-});
 
-// docker build -t inventory-api .
-// docker run -d -p 5000:80 --name inventory-api-container inventory-api
-// docker run -d -p 5000:80 --name inventory-api-container inventory-api
+
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
