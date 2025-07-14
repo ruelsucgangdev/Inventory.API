@@ -17,12 +17,28 @@ namespace Inventory.API.Controllers
             _productRepository = productRepository;
         }
 
-        [AllowAnonymous]
+        [AllowAnonymous]  // this is excempted for token validation
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var products = await _productRepository.GetAllAsync();
-            return Ok(products);
+            try
+            {
+                var products = await _productRepository.GetAllAsync();
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"ERROR: {ex.Message} | INNER: {ex.InnerException?.Message}");
+            }
+
+            //        var sampleProducts = new List<object>
+            //{
+            //    new { Id = 1, Name = "Sample Product 1", Price = 10.99 },
+            //    new { Id = 2, Name = "Sample Product 2", Price = 25.50 },
+            //    new { Id = 3, Name = "Sample Product 3", Price = 99.00 }
+            //};
+
+            //        return Ok(sampleProducts);
         }
 
         [HttpGet("{id}", Name = "GetProductById")]
